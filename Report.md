@@ -1,17 +1,22 @@
+[//]: # (Image References)
+
+[image1]: MADDPG_training.gif "Training"
+[image2]: MADDPG_tennis.gif "Trained_Agent"
+
 # Conclusion and Outlook
-In this article, I discuss the training result of the implemented **Continous Control for the Reacher Environment**.  
-I solved the given problem with the DDPG algorithm since DDPG works very well in continuous action space.
+In this article, I discuss the training result of the **Collaboration and Competition Project**.   
+I solved the given problem with the MADDPG algorithm since MADDPG works very well in continuous action space.
 
 ## Learning Algorithm
 
-#### - Actor
+#### - Actor Network
 The actor was initialized:
 * Fully connected - inputState -> 128 -> 128 -> actionSize
 * ReLu Activation Function 
 * first Layer with - BatchNorm1d(x)
 * Adam Optimzer was used to caluclate loss
 
-#### - Critic
+#### - Critic Network
 *Build a critic (value) network that maps (state, action) pairs -> Q-values.*  
 The critic was initialized;
 * Fully connected - 128 -> 128 -> Q-Value
@@ -19,7 +24,10 @@ The critic was initialized;
 * first Layer with - BatchNorm1d(x)
 * Adam Optimzer was used to caluclate loss
 
-### Deep Deterministic Policy Gradient (DDPG)
+### Mulit-Agent Deep Deterministic Policy Gradient (MADDPG)
+The difference between MADDPG and DDPG is that each Agent is initialized with its own target and local network.
+But all agents do share a common replay buffer - they sample the same experience.
+**DDPG:**
 In contrast to other Actor-Critic methods, the critic in DDPG is used to approximate the maximizer over the Q-values of the next state.  
 This is actually differnet to classic Actor-Crtitic approaches. DDPG is preferably used in continuous action spaces.    
 * The actor tries to learn the best action argmax<sub>a</sub>( Q(s,a) )  
@@ -46,15 +54,22 @@ Fixed-size buffer to store experience tuples and use them again for training. Th
 * critic learning rate - lr = 2e-4
 * weight decay = 0  
 
+## Training
+![Training Process][image1]
+
 ## Results
-* [version 1]
-The required criterion of an average of 30 points (averaged over 100 episode) was achieved in round about 300 episodes.
+I was supprized that there was no need to change the hyperparameters.  
+I took the same as in the project 2 - Continuous Control.  
+The agent could solve the environment in 868 episodes.
 
 ![Plot- Rewards](./result.png)
 
+## Watch a trained agent
+![Trained Agent][image2]
+
+
 ## Outlook
-How the agent can be improved:
+How the agent may be improved:
 * Priorized Experience Replay
 * Playing around with the parameters
 * Use PPO
-* Use version_2 (20 agents) to train simultaneously
